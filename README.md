@@ -1,6 +1,6 @@
 # Simple Bash Shell Script that creates a packageable artifact from your Git diff
 
-### Creates a packageable set of sfdx source files that were added or changed since a last commit of your choosing. Deletions are not accounted for
+### Creates a packageable set of sfdx source files that were added or changed since a previous commit of your choosing. Deletions are not accounted for
 
 ## Requirements
 
