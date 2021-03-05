@@ -1,4 +1,6 @@
 #!/bin/bash
+set -euo pipefail
+
 OIFS="$IFS"
 IFS=$'\n'
 if [ $# -lt 1 ]
@@ -38,3 +40,4 @@ tar -xf myfiles.tar # expand tar file to recreate the directory structure, relat
 #Uncomment these lines if you wish to package the source and deploy to an org 
 #sfdx force:source:convert -r .\force-app\ -d src -p mypackagename
 #sfdx force:mdapi:deploy -c -d src -u myorg -w 20
+cd -
