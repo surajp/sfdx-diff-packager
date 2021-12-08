@@ -22,28 +22,28 @@ if (!(Test-Path -Path $ToFolder)) {
 }
 
 $ChangedFiles = $(git diff --diff-filter=ACMRT --name-only $args[0] $ToHash)
-foreach ($var in $ChangedFiles) {
+foreach ($Item in $ChangedFiles) {
  # loop over all new and modified files in git diff
-	if (Test-Path -Path "$var" -PathType Container) { 
+	if (Test-Path -Path "$Item" -PathType Container) { 
 	  # If this is a directory, copy it over as is, recursively. Most likely this won't have an accompanying -meta.xml file
-		Copy-Item "$var" -Destination "$ToFolder" -Recurse -Force
+		Copy-Item "$Item" -Destination "$ToFolder" -Recurse -Force
 	}
 	# for aura and lwc, grab the whole directory and not just the changed file
-	elseif ("$var" -like "*/aura/*" || "$var" -like "*/lwc/*") {
-		$pathParts = ($var -split '\\')
-		$parentDir = (($pathParts[0..$pathParts.count - 2]) -join '\')
-		Copy-Item "$parentDir" -Destination "$ToFolder" -Recurse -Force
+	elseif ("$Item" -like "*/aura/*" || "$Item" -like "*/lwc/*") {
+		$PathParts = ($Item -split '\\')
+		$ParentDir = (($PathParts[0..$PathParts.count - 2]) -join '\')
+		Copy-Item "$ParentDir" -Destination "$ToFolder" -Recurse -Force
 	}
 	else {
-		New-Item -ItemType File "$ToFolder/$var" -Force
-		Copy-Item "$var" -Destination "$ToFolder/$var" -Force
-		if (Test-Path -Path "$var-meta.xml") {
+		New-Item -ItemType File "$ToFolder/$Item" -Force
+		Copy-Item "$Item" -Destination "$ToFolder/$Item" -Force
+		if (Test-Path -Path "$Item-meta.xml") {
 			# if there is a meta.xml file, grab that as well
-			Copy-Item "$var-meta.xml" -Destination "$ToFolder/$var-meta.xml" -Force
+			Copy-Item "$Item-meta.xml" -Destination "$ToFolder/$Item-meta.xml" -Force
 		}
 		# if it was the meta.xml file that was changed, grab that as well as its accompanying source file, if one exists
-		elseif ("$var" -like "*-meta.xml") {
-			$SourceFile = "$var" -replace "-meta.xml", ""
+		elseif ("$Item" -like "*-meta.xml") {
+			$SourceFile = "$Item" -replace "-meta.xml", ""
 			if (Test-Path -Path "$actualFile") {
 				Copy-Item "$SourceFile" -Destination "$ToFolder/$SourceFile" -Force
 			}
