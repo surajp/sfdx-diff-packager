@@ -33,15 +33,15 @@ fi
 for var in $(
 	git diff --diff-filter=ACMRT --name-only $1 $toHash
 ); do
-	if [[ "$var" = *"/aura/"* ]] || [[ "$var" = *"/lwc/"* ]]; then # for aura and lwc, grab the whole directory and not just the changed file
-		baseFolder=$(getBaseFolder "$var")                            #the component's main folder
-		tar -rf local/myfiles.tar $baseFolder                         # add files to a 'tar' archive. we will expand it to recreate the directory structure after we are done
-	elif [[ "$var" = *"/staticresources/"* ]]; then                #static resource meta files are named differently. zip files will need to be deployed with all files and subfolders included
-		if [[ "$(dirname ""$var"")" != *"staticresources" ]]; then    # if this is a folder, we grab all files and sub-folders within
-			baseFolder=$(getBaseFolder "$var")                           #the component's main folder
-			tar -rf local/myfiles.tar $baseFolder                        # add files to a 'tar' archive. we will expand it to recreate the directory structure after we are done
-			if [ -f "$baseFolder"*"-meta.xml" ]; then                    #for static resources, the meta.xml is at the same level as the folder, not inside the folder like aura and lwc
-				tar -rf local/myfiles.tar "$baseFolder.resource-meta.xml"   # the meta xml is named foldername.resource-meta.xml
+	if [[ "$var" = *"/aura/"* ]] || [[ "$var" = *"/lwc/"* ]]; then                     # for aura and lwc, grab the whole directory and not just the changed file
+		baseFolder=$(getBaseFolder "$var")                                                #the component's main folder
+		tar -rf local/myfiles.tar $baseFolder                                             # add files to a 'tar' archive. we will expand it to recreate the directory structure after we are done
+	elif [[ "$var" = *"/staticresources/"* ]]; then                                    #static resource meta files are named differently. zip files will need to be deployed with all files and subfolders included
+		if [[ "$(dirname ""$var"")" != "${var/staticresources*/staticresources}" ]]; then # if this is a folder, we grab all files and sub-folders within
+			baseFolder=$(getBaseFolder "$var")                                               #the component's main folder
+			tar -rf local/myfiles.tar $baseFolder                                            # add files to a 'tar' archive. we will expand it to recreate the directory structure after we are done
+			if [ -f "$baseFolder"*"-meta.xml" ]; then                                        #for static resources, the meta.xml is at the same level as the folder, not inside the folder like aura and lwc
+				tar -rf local/myfiles.tar "$baseFolder.resource-meta.xml"                       # the meta xml is named foldername.resource-meta.xml
 			fi
 		else
 			tar -rf local/myfiles.tar "$var"              # if its not a folder, only grab the changed file
