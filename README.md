@@ -48,6 +48,10 @@ or
 
 ## Notes
 
-- ## Please review the generated files thoroughly before deploying. This script is not fool-proof by any means. It has not been tested with all possible metadata components.
+- **Please review the generated files thoroughly before deploying. This script is not fool-proof by any means. It has not been tested with all possible metadata components.**
 - Script does not generate deployable artifacts for deletes.
 - If you get an 'invalid character' error, run 'dos2unix' command on the file. (bash)
+
+## Contributions
+
+- Thanks to [Greg Butt](https://github.com/gbutt) for pointing out the need to handle static resources separately. You can check out his script [here](https://gist.github.com/gbutt/8ced61b167df1c79e37f849cfcbfe889#file-create-diff-package-sh)
